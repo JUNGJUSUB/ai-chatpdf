@@ -6,15 +6,19 @@ import os
 import streamlit as st
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
+from streamlit_extras.buy_me_a_coffee import button
+
+button(username="ddak2ya", floating=True, width=221)
 
 API_KEY = os.getenv('OPENAI_API_KEY')
-
-openai_key = st.text_input('OPEN_AI_API_KEY',type="password")
 
 
 #제목
 st.title("ChatPDF")
 st.write("---")
+
+#OPENAI_API_KEY 입력받기
+openai_key = st.text_input('OPEN_AI_API_KEY',type="password")
 
 
 #파일업로드
