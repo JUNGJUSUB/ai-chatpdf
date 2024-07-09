@@ -84,7 +84,7 @@ if uploaded_file is not None:
             from langchain_core.runnables import RunnablePassthrough
             from langchain import hub
 
-            llm = ChatOpenAI(api_key=openai_key,model_name="gpt-4o", temperature=0, streaming=True, callback=[stream_handler])
+            llm = ChatOpenAI(api_key=openai_key,model_name="gpt-4o", temperature=0, streaming=True, callbacks=[stream_handler])
 
 
             # See full prompt at https://smith.langchain.com/hub/rlm/rag-prompt
