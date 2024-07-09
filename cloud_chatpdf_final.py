@@ -61,29 +61,30 @@ if uploaded_file is not None:
     #4. load it into Chroma
     from langchain_chroma import Chroma
     vectordb = Chroma.from_documents(texts, embeddings_model)
-    
-    #https://velog.io/@udonehn/RAG%EB%A5%BC-%EC%A0%81%EC%9A%A9%ED%95%9C-%EC%A7%88%EC%9D%98%EC%9D%91%EB%8B%B5-%EC%B1%97%EB%B4%87-LangChanin
-    #Question I
-    # from langchain_openai import ChatOpenAI
-    # from langchain.retrievers.multi_query import MultiQueryRetriever
-    # question = "아내가 먹고 싶어하는 음식은 무엇이야?"
-    # llm = ChatOpenAI(model_name="gpt-3.5-turbo",temperature=0)
-    # #retriever_from_llm = MultiQueryRetriever.from_llm(  retriever=vectordb.as_retriever(), llm=llm)
-
-    # # retriever_from_llm.get_relevant_documents(query=question)
-
+  
+    #Stream 받아 줄 Handler 만들기
+    from langchain.callbacks.base import BaseCallbackHandler
+    class StreamHandler(BaseCallbackHandler):
+        def __init__(self, container, initial_text=""):
+            self.container = container
+            self.text=initial_text
+        def on_llm_new_token(self, token: str, **kwargs) -> None:
+            self.text += token
+            self.container.markdown(self.text)
 
     #Question II
     st.header("PDF 에게 질문해보세요.")
     question = st.text_input("질문을 입력하세요")
     if st.button("질문하기"):
         with st.spinner("Wait for it..."):
+            chatbox = st.empty()
+            stream_handler = StreamHandler(chatbox)
             from langchain_openai import ChatOpenAI
             from langchain_core.output_parsers import StrOutputParser
             from langchain_core.runnables import RunnablePassthrough
             from langchain import hub
 
-            llm = ChatOpenAI(api_key=openai_key,model_name="gpt-4o", temperature=0)
+            llm = ChatOpenAI(api_key=openai_key,model_name="gpt-4o", temperature=0, streaming=True, callback=[stream_handler])
 
 
             # See full prompt at https://smith.langchain.com/hub/rlm/rag-prompt
@@ -116,4 +117,4 @@ if uploaded_file is not None:
 
             result = qa_chain.invoke(question)
             print(result);
-            st.write(result)
+            
