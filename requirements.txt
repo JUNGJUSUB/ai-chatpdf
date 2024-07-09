@@ -1,0 +1,13 @@
+langchain
+openai
+pypdf
+chromadb
+tiktoken
+pysqlite3-binary
+
+
+#https://python.langchain.com/v0.2/docs/how_to/
+#pip install --upgrade --quiet pypdf
+#pip install -qU langchain-text-splitters
+#pip install chromadb
+#pip install tiktoken
