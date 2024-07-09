@@ -4,7 +4,7 @@ pypdf
 chromadb
 tiktoken
 pysqlite3-binary
-
+langchain_community
 
 #https://python.langchain.com/v0.2/docs/how_to/
 #pip install --upgrade --quiet pypdf
